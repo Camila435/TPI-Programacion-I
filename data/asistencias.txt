@@ -1,0 +1,4 @@
+17-06-2025;12345;Castaneda;Mario;P
+17-06-2025;12346;Wayne;Bruce;A
+17-06-2025;44777;Colapinto;Franco;P
+17-06-2025;46668;Tevez;Carlos;A

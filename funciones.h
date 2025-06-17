@@ -7,18 +7,37 @@
         char apellido[50];      
         struct Alumno* siguiente; 
     };
+    struct Asistencia{
+        char fecha[11];
+        int legajo;            
+        char nombre[50];        
+        char apellido[50];      
+        char estado;
+        struct Asistencia* siguiente; 
+    };
     struct Datos{
         int legajo;         
         char nombre[50]; 
         char apellido[50];
     };
 
-    struct Datos pedirDatos();
+    void tomarAsistencia(struct Alumno* cabeza);
+
+    // GESTION DE ALUMNOS
     void registrarNuevoAlumno(struct Alumno** cabeza, int legajo,  char nombre[50], char apellido[50]);
-    void tomarAsistencia();
+    void editarAlumno(struct Alumno* cabeza);
     void editarAsistencia();
-    void verHistorialAsistencias();
+    void verHistorialAsistencias(struct Alumno* alumnos, struct Asistencia* asistencias, int legajoBuscado);
+
+    // INFORMES
     void listaInasistencias();
+
+    //Archivo misc.c
+    struct Datos pedirDatos();
+    void cargarAlumnos(struct Alumno** cabeza);
+    void mostrarAlumnos(struct Alumno* cabeza);
+    void cargarAsistencias(struct Asistencia** cabeza);
+    void liberarAsistencias(struct Asistencia* cabeza);
 
 
 #endif
