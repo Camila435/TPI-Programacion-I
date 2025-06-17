@@ -40,9 +40,8 @@ int main(){
                 mostrarAlumnos(alumnos);
                 printf("1 - Registrar nuevo alumno\n");
                 printf("2 - Editar alumno\n");
-                printf("3 - Eliminar alumno\n");
-                printf("4 - Ver historial de asistencias\n");
-                printf("5 - Editar asistencia\n");
+                printf("3 - Ver historial de asistencias\n");
+                printf("4 - Editar asistencia\n");
                 printf("0 - Volver\n>");
                 scanf("%d", &op);
                 switch (op){
@@ -54,15 +53,12 @@ int main(){
                     editarAlumno(alumnos);
                     break;
                 case 3:
-                    
-                    break;
-                case 4:
                     int legajo;
                     printf("Ingrese el legajo del alumno:");
                     scanf("%d", &legajo);
                     verHistorialAsistencias(alumnos, asistencias, legajo);
                     break;
-                case 5:
+                case 4:
                     
                     break;
                 case 0:
