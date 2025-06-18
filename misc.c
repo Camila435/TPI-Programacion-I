@@ -110,3 +110,38 @@ void mostrarAlumnos(struct Alumno* cabeza) {
         actual = actual->siguiente;
     }
 }
+
+void ordenarAlumnosPorApellido(struct Alumno* cabeza) {
+    if (cabeza == NULL) return;
+
+    int cambiado;
+    struct Alumno* ptr1;
+    struct Alumno* lptr = NULL;
+
+    do {
+        cambiado = 0;
+        ptr1 = cabeza;
+
+        while (ptr1->siguiente != lptr) {
+            if (strcmp(ptr1->apellido, ptr1->siguiente->apellido) > 0) {
+                // Intercambiar todos los datos del nodo
+                int tempLegajo = ptr1->legajo;
+                char tempNombre[50], tempApellido[50];
+                strcpy(tempNombre, ptr1->nombre);
+                strcpy(tempApellido, ptr1->apellido);
+
+                ptr1->legajo = ptr1->siguiente->legajo;
+                strcpy(ptr1->nombre, ptr1->siguiente->nombre);
+                strcpy(ptr1->apellido, ptr1->siguiente->apellido);
+
+                ptr1->siguiente->legajo = tempLegajo;
+                strcpy(ptr1->siguiente->nombre, tempNombre);
+                strcpy(ptr1->siguiente->apellido, tempApellido);
+
+                cambiado = 1;
+            }
+            ptr1 = ptr1->siguiente;
+        }
+        lptr = ptr1;
+    } while (cambiado);
+}

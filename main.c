@@ -37,6 +37,7 @@ int main(){
         case 2:
             do{
                 printf("| GESTION DE ALUMNOS |\n");
+                ordenarAlumnosPorApellido(alumnos);
                 mostrarAlumnos(alumnos);
                 printf("1 - Registrar nuevo alumno\n");
                 printf("2 - Editar alumno\n");
@@ -53,13 +54,10 @@ int main(){
                     editarAlumno(alumnos);
                     break;
                 case 3:
-                    int legajo;
-                    printf("Ingrese el legajo del alumno:");
-                    scanf("%d", &legajo);
-                    verHistorialAsistencias(alumnos, asistencias, legajo);
+                    verHistorialAsistencias(alumnos, asistencias);
                     break;
                 case 4:
-                    
+                   editarAsistencia(asistencias);
                     break;
                 case 0:
                     break;
@@ -78,10 +76,10 @@ int main(){
                 scanf("%d", &op);
                 switch (op){
                 case 1:
-                    
+                    mostrarAsistenciasPorFecha(asistencias);
                     break;
                 case 2:
-                    
+                    mostrarInasistenciasPorFecha(asistencias);
                     break;
                 case 0:
                     break;
