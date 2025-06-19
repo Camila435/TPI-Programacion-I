@@ -218,54 +218,33 @@ void mostrarAsistenciasPorFecha(struct Asistencia* asistencias) {
     }
 }
 
-void mostrarInasistenciasPorFecha(struct Asistencia* asistencias) {
-    char fecha[11];
-    printf("Ingrese la fecha a consultar (YYYY-MM-DD): ");
-    scanf("%10s", fecha);
 
-    struct Asistencia* actual = asistencias;
-    int encontrado = 0;
 
-    printf("\n--- Inasistencias del dia %s ---\n", fecha);
-    printf("Legajo | Apellido     | Nombre       | Estado\n");
-    printf("-----------------------------------------------\n");
-
-    while (actual != NULL) {
-        if (strcmp(actual->fecha, fecha) == 0 && actual->estado == 'A') {
-            printf("%6d | %-12s | %-12s | %c\n", actual->legajo, actual->apellido, actual->nombre, actual->estado);
-            encontrado = 1;
-        }
-        actual = actual->siguiente;
-    }
-
-    if (!encontrado) {
-        printf("No hay inasistencias registradas para esa fecha.\n");
-    }
-}
 void listaInasistencias(struct Alumno* alumnos, struct Asistencia* asistencias) {
     if (alumnos == NULL || asistencias == NULL) {
-        printf("No hay datos suficientes para mostrar inasistencias.\n");
+        printf("\n[!] Error: No hay datos suficientes para mostrar inasistencias.\n\n");
         return;
     }
 
-    struct Alumno* actualAlumno = alumnos;
-    int maxFaltas = 0;
-
-    // Lista paralela para guardar resultados
     struct {
         int legajo;
         char nombre[50];
         char apellido[50];
         int faltas;
-    } resumen[500]; // máximo 500 alumnos, ajustable
-
+    } resumen[500];
+    
     int totalAlumnos = 0;
+    int maxFaltas = 0;
+    struct Alumno* actualAlumno = alumnos;
 
+    // Procesar datos
     while (actualAlumno != NULL) {
         int faltas = 0;
         struct Asistencia* actualAsistencia = asistencias;
+        
         while (actualAsistencia != NULL) {
-            if (actualAsistencia->legajo == actualAlumno->legajo && actualAsistencia->estado == 'A') {
+            if (actualAsistencia->legajo == actualAlumno->legajo && 
+                actualAsistencia->estado == 'A') {
                 faltas++;
             }
             actualAsistencia = actualAsistencia->siguiente;
@@ -276,24 +255,37 @@ void listaInasistencias(struct Alumno* alumnos, struct Asistencia* asistencias) 
         strcpy(resumen[totalAlumnos].apellido, actualAlumno->apellido);
         resumen[totalAlumnos].faltas = faltas;
 
-        if (faltas > maxFaltas) {
-            maxFaltas = faltas;
-        }
-
+        if (faltas > maxFaltas) maxFaltas = faltas;
         totalAlumnos++;
         actualAlumno = actualAlumno->siguiente;
     }
 
-    printf("\n--- Inasistencias por alumno ---\n");
-    for (int i = 0; i < totalAlumnos; i++) {
-        printf("%d - %s %s | Faltas: %d\n", resumen[i].legajo, resumen[i].apellido, resumen[i].nombre, resumen[i].faltas);
-    }
+    // Mostrar tabla
+    printf("\n");
+    printf("+--------+----------------+--------------+---------+\n");
+    printf("| Legajo | Apellido       | Nombre       | Faltas  |\n");
+    printf("+--------+----------------+--------------+---------+\n");
 
-    printf("\nAlumnos con más inasistencias (%d):\n", maxFaltas);
     for (int i = 0; i < totalAlumnos; i++) {
-        if (resumen[i].faltas == maxFaltas && maxFaltas > 0) {
-            printf("%d - %s %s | Faltas: %d\n", resumen[i].legajo, resumen[i].apellido, resumen[i].nombre, resumen[i].faltas);
+        printf("| %-6d | %-14s | %-12s | %-7d |\n", 
+               resumen[i].legajo,
+               resumen[i].apellido,
+               resumen[i].nombre,
+               resumen[i].faltas);
+    }
+    printf("+--------+----------------+--------------+---------+\n");
+
+    // Mostrar resumen
+    if (maxFaltas > 0) {
+        printf("\n[!] Alumnos con mas inasistencias (%d faltas):\n", maxFaltas);
+        for (int i = 0; i < totalAlumnos; i++) {
+            if (resumen[i].faltas == maxFaltas) {
+                printf("- %s %s (Legajo: %d)\n", 
+                       resumen[i].apellido, resumen[i].nombre, resumen[i].legajo);
+            }
         }
+    } else {
+        printf("\n[i] Todos los alumnos tienen asistencia perfecta.\n");
     }
+    printf("\n");
 }
-

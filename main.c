@@ -79,7 +79,7 @@ int main(){
                     mostrarAsistenciasPorFecha(asistencias);
                     break;
                 case 2:
-                    mostrarInasistenciasPorFecha(asistencias);
+                    listaInasistencias(alumnos, asistencias);
                     break;
                 case 0:
                     break;
