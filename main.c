@@ -97,7 +97,7 @@ int main(){
         default:
             printf("Opción no válida. Intente de nuevo.\n");
             break;
-        } // <-- Cierra el switch principal
-    } while(op != 0); // <-- Cierra el do-while principal
+        }
+    } while(op != 0); 
     return 0;
 }
