@@ -4,6 +4,7 @@
 #include "funciones.h"
 #include <ctype.h>
 
+
 // Funcion para tomar asistencia **||Actualizar para que use <time.h>||**
 void tomarAsistencia(struct Alumno* cabeza) {
     FILE* asistencias = fopen("data/asistencias.txt", "a");
@@ -13,8 +14,8 @@ void tomarAsistencia(struct Alumno* cabeza) {
     }
 
     char fecha[11];
-    printf("Ingrese la fecha (dd-mm-aaaa): ");
-    scanf("%10s", fecha);
+    fechaActual(fecha);
+
 
     struct Alumno* actual = cabeza;
     char estado;
@@ -239,6 +240,60 @@ void mostrarInasistenciasPorFecha(struct Asistencia* asistencias) {
 
     if (!encontrado) {
         printf("No hay inasistencias registradas para esa fecha.\n");
+    }
+}
+void listaInasistencias(struct Alumno* alumnos, struct Asistencia* asistencias) {
+    if (alumnos == NULL || asistencias == NULL) {
+        printf("No hay datos suficientes para mostrar inasistencias.\n");
+        return;
+    }
+
+    struct Alumno* actualAlumno = alumnos;
+    int maxFaltas = 0;
+
+    // Lista paralela para guardar resultados
+    struct {
+        int legajo;
+        char nombre[50];
+        char apellido[50];
+        int faltas;
+    } resumen[500]; // máximo 500 alumnos, ajustable
+
+    int totalAlumnos = 0;
+
+    while (actualAlumno != NULL) {
+        int faltas = 0;
+        struct Asistencia* actualAsistencia = asistencias;
+        while (actualAsistencia != NULL) {
+            if (actualAsistencia->legajo == actualAlumno->legajo && actualAsistencia->estado == 'A') {
+                faltas++;
+            }
+            actualAsistencia = actualAsistencia->siguiente;
+        }
+
+        resumen[totalAlumnos].legajo = actualAlumno->legajo;
+        strcpy(resumen[totalAlumnos].nombre, actualAlumno->nombre);
+        strcpy(resumen[totalAlumnos].apellido, actualAlumno->apellido);
+        resumen[totalAlumnos].faltas = faltas;
+
+        if (faltas > maxFaltas) {
+            maxFaltas = faltas;
+        }
+
+        totalAlumnos++;
+        actualAlumno = actualAlumno->siguiente;
+    }
+
+    printf("\n--- Inasistencias por alumno ---\n");
+    for (int i = 0; i < totalAlumnos; i++) {
+        printf("%d - %s %s | Faltas: %d\n", resumen[i].legajo, resumen[i].apellido, resumen[i].nombre, resumen[i].faltas);
+    }
+
+    printf("\nAlumnos con más inasistencias (%d):\n", maxFaltas);
+    for (int i = 0; i < totalAlumnos; i++) {
+        if (resumen[i].faltas == maxFaltas && maxFaltas > 0) {
+            printf("%d - %s %s | Faltas: %d\n", resumen[i].legajo, resumen[i].apellido, resumen[i].nombre, resumen[i].faltas);
+        }
     }
 }
 

@@ -1,6 +1,8 @@
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
+void fechaActual(char* fecha);
+
     struct Alumno{
         int legajo;            
         char nombre[50];        

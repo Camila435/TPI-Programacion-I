@@ -4,6 +4,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "funciones.h"
+#include <time.h>
+
+void fechaActual(char* fecha) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(fecha, "%04d-%02d-%02d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+}
+
 
 // Pide datos al ingresar un nuevo alumno.
 struct Datos pedirDatos(){
