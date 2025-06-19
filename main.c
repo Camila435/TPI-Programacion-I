@@ -47,7 +47,7 @@ int main(){
                 scanf("%d", &op);
                 switch (op){
                 case 1:
-                    struct Datos datoAlumno = pedirDatos();
+                    struct Datos datoAlumno = pedirDatos(alumnos);
                     registrarNuevoAlumno(&alumnos, datoAlumno.legajo, datoAlumno.apellido, datoAlumno.nombre);
                     break;
                 case 2:
@@ -67,36 +67,37 @@ int main(){
             }while(op != 0);
             op = 2; 
             break;
-        case 3:
-            do{
+                case 3: {
+            int opInforme;
+            do {
                 printf("| INFORMES |\n");
-                printf("1 - Ver asistencias de un dia\n");
+                printf("1 - Ver asistencias de un dia en particular\n");
                 printf("2 - Ver lista de inasitencias\n");
                 printf("0 - Volver\n");
-                scanf("%d", &op);
-                switch (op){
-                case 1:
-                    mostrarAsistenciasPorFecha(asistencias);
-                    break;
-                case 2:
-                    listaInasistencias(alumnos, asistencias);
-                    break;
-                case 0:
-                    break;
-                default:
-                    break;
+                scanf("%d", &opInforme);
+                switch (opInforme) {
+                    case 1:
+                        mostrarAsistenciasPorFecha(asistencias);
+                        break;
+                    case 2:
+                        listaInasistencias(alumnos, asistencias);
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        printf("Opción no válida. Intente de nuevo.\n");
+                        break;
                 }
-            }while(op != 0);
+            } while (opInforme != 0);
             break;
+        }
         case 0:
             printf("Saliendo del programa.\n");
             break;
         default:
             printf("Opción no válida. Intente de nuevo.\n");
             break;
-        }
-    }while(op != 0);
-
-
+        } // <-- Cierra el switch principal
+    } while(op != 0); // <-- Cierra el do-while principal
     return 0;
 }

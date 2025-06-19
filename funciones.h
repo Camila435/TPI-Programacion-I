@@ -30,11 +30,12 @@ void fechaActual(char* fecha);
     void editarAlumno(struct Alumno* cabeza);
     void editarAsistencia(struct Asistencia* cabeza);
     void verHistorialAsistencias(struct Alumno* alumnos, struct Asistencia* asistencias);
+    int legajoValido(struct Alumno* alumnos, int legajo); 
 
     // INFORMES
     void listaInasistencias();
     void mostrarAsistenciasPorFecha(struct Asistencia* asistencias);
-    void mostrarInasistenciasPorFecha(struct Asistencia* asistencias);
+   
 
 
     //Archivo misc.c
@@ -44,6 +45,7 @@ void fechaActual(char* fecha);
     void cargarAsistencias(struct Asistencia** cabeza);
     void liberarAsistencias(struct Asistencia* cabeza);
     void ordenarAlumnosPorApellido(struct Alumno* cabeza);
+    
 
 
 #endif
