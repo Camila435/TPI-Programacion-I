@@ -60,12 +60,12 @@ void tomarAsistencia(struct Alumno* alumnos, struct Asistencia* asistencias) {
 // GESTION DE ALUMNOS //
 
 // Esta funcion agrega un nodo de alumno al final de la lista, luego guarda sus datos en alumnos.txt.
-void registrarNuevoAlumno(struct Alumno** cabeza, int legajo,  char nombre[50], char apellido[50]) {
+void registrarNuevoAlumno(struct Alumno** cabeza, int legajo, char apellido[50],  char nombre[50]) {
    
     struct Alumno* nuevo = (struct Alumno*)malloc(sizeof(struct Alumno));
     nuevo->legajo = legajo;
-    strcpy(nuevo->nombre, nombre); 
     strcpy(nuevo->apellido, apellido); 
+    strcpy(nuevo->nombre, nombre); 
     nuevo->siguiente = NULL; 
 
     if (*cabeza == NULL) {
@@ -81,7 +81,7 @@ void registrarNuevoAlumno(struct Alumno** cabeza, int legajo,  char nombre[50], 
 
     FILE* archivo = fopen("data/alumnos.txt", "a"); 
     if (archivo != NULL) {
-        fprintf(archivo, "%d;%s;%s\n", legajo, nombre, apellido);
+        fprintf(archivo, "%d;%s;%s\n", legajo, apellido, nombre);
         fclose(archivo);
     } 
     else{
