@@ -1,6 +1,6 @@
-## Sistema de Asistencias Escolar 
+# Sistema de Asistencias Escolar 
 
-# Un sistema desarrollado en C para gestionar la asistencia de alumnos.
+## Un sistema desarrollado en C para gestionar la asistencia de alumnos.
 
 **Funcionalidades:**
 
@@ -13,13 +13,12 @@
 - Persistencia de datos en archivos .txt
 
 
-## Cómo usar
+## - Cómo usar -
 
 * Descargar el repositorio.
 
 *  Ejecutar el archivo asistSis.exe  
-    *(o compilarlo manualmente, usando* `` gcc main.c funciones.c misc.c -o asistSis `` y ejecutarlo con `` .\asistSis ``)  
-     **Crear carpeta 'data' en el directorio antes de iniciar!**
+    *(o compilarlo manualmente, usando* `` gcc main.c funciones.c misc.c -o asistSis `` *y ejecutarlo con* `` .\asistSis ``)
 
 *  En el primer uso no se podrá usar la mayoría de las funciones, ya que estas requieren de una lista de
    alumnos. Para generarla, dirigirse a la opción "Gestion de alumnos" y luego "Registrar nuevo alumno" por
