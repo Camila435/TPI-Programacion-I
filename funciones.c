@@ -5,8 +5,14 @@
 #include <ctype.h>
 
 
-// Funcion para tomar asistencia **||Actualizar para que use <time.h>||**
+// Funcion para tomar asistencia
 void tomarAsistencia(struct Alumno* cabeza) {
+
+    if (cabeza == NULL) {
+        printf("No hay alumnos registrados. No se puede tomar asistencia.\n");
+        return;
+    }
+
     FILE* asistencias = fopen("data/asistencias.txt", "a");
     if (asistencias == NULL) {
         printf("Error al abrir el archivo de asistencias.\n");
@@ -16,15 +22,17 @@ void tomarAsistencia(struct Alumno* cabeza) {
     char fecha[11];
     fechaActual(fecha);
 
-
     struct Alumno* actual = cabeza;
-    char estado;
+    char op, estado;
 
+    printf("\n%-8s | %-15s | %-15s | %-8s\n", "Legajo", "Apellido", "Nombre", "Asistencia");
+    printf("---------------------------------------------------------------\n");
     while (actual != NULL) {
-        printf("Alumno: %s %s (Legajo: %d) - Presente (P) o Ausente (A)? ", actual->nombre, actual->apellido, actual->legajo);
+        printf("%-8d | %-15s | %-15s | ", actual->legajo, actual->apellido, actual->nombre);
+        printf("[P/A]: ");
         scanf(" %c", &estado);
         estado = (estado == 'p' || estado == 'P') ? 'P' : 'A';
-
+    
         fprintf(asistencias, "%s;%d;%s;%s;%c\n", fecha, actual->legajo, actual->apellido, actual->nombre, estado);
 
         actual = actual->siguiente;
@@ -117,30 +125,34 @@ void verHistorialAsistencias(struct Alumno* alumnos, struct Asistencia* asistenc
     printf("Ingrese el legajo del alumno: ");
     scanf("%d", &legajo);
     struct Alumno* alumno = alumnos;
+
     while (alumno != NULL && alumno->legajo != legajo) {
         alumno = alumno->siguiente;
     }
-
     if (alumno == NULL) {
         printf("No se encontró ningún alumno con legajo %d.\n", legajo);
         return;
     }
 
-    printf("\n--- Historial de asistencias ---\n");
+    printf("\n==================================\n");
+    printf("     HISTORIAL DE ASISTENCIAS\n");
+    printf("==================================\n");
     printf("Alumno: %s %s (Legajo: %d)\n", alumno->apellido, alumno->nombre, alumno->legajo);
-    printf("Fecha        | Estado\n");
-    printf("----------------------\n");
+    printf("+------------+---------+\n");
+    printf("| Fecha      | Estado  |\n");
+    printf("+------------+---------+\n");
 
     struct Asistencia* actual = asistencias;
     int encontrado = 0;
 
     while (actual != NULL) {
         if (actual->legajo == legajo) {
-            printf("%s | %s\n", actual->fecha, (actual->estado == 'P') ? "Presente" : "Ausente");
+            printf("| %-10s | %-7s |\n", actual->fecha, (actual->estado == 'P') ? "Presente" : "Ausente");
             encontrado = 1;
         }
         actual = actual->siguiente;
     }
+    printf("+------------+---------+\n");
 
     if (!encontrado) {
         printf("No hay asistencias registradas para este alumno.\n");
@@ -157,7 +169,7 @@ void editarAsistencia(struct Asistencia* cabeza) {
     char fecha[11];
     printf("Ingrese el legajo del alumno para modificar asistencia: ");
     scanf("%d", &legajo);
-    printf("Ingrese la fecha de la asistencia (formato YYYY-MM-DD): ");
+    printf("Ingrese la fecha de la asistencia (formato AAAA-MM-DD): ");
     scanf("%10s", fecha);
 
     struct Asistencia* actual = cabeza;
@@ -195,19 +207,21 @@ void editarAsistencia(struct Asistencia* cabeza) {
 }
 void mostrarAsistenciasPorFecha(struct Asistencia* asistencias) {
     char fecha[11];
-    printf("Ingrese la fecha a consultar (YYYY-MM-DD): ");
+    printf("Ingrese la fecha a consultar (formato AAAA-MM-DD): ");
     scanf("%10s", fecha);
 
     struct Asistencia* actual = asistencias;
     int encontrado = 0;
 
-    printf("\n--- Asistencias del dia %s ---\n", fecha);
-    printf("Legajo | Apellido     | Nombre       | Estado\n");
-    printf("-----------------------------------------------\n");
-
+    printf("\n==================================\n");
+    printf("   ASISTENCIAS DEL DÍA %s\n", fecha);
+    printf("==================================\n");
+    printf("+--------+----------------+--------------+--------+\n");
+    printf("| Legajo | Apellido       | Nombre       | Estado |\n");
+    printf("+--------+----------------+--------------+--------+\n");
     while (actual != NULL) {
         if (strcmp(actual->fecha, fecha) == 0) {
-            printf("%6d | %-12s | %-12s | %c\n", actual->legajo, actual->apellido, actual->nombre, actual->estado);
+            printf(" %6d | %-14s | %-12s | %c\n", actual->legajo, actual->apellido, actual->nombre, actual->estado);
             encontrado = 1;
         }
         actual = actual->siguiente;
@@ -222,7 +236,7 @@ void mostrarAsistenciasPorFecha(struct Asistencia* asistencias) {
 
 void listaInasistencias(struct Alumno* alumnos, struct Asistencia* asistencias) {
     if (alumnos == NULL || asistencias == NULL) {
-        printf("\n[!] Error: No hay datos suficientes para mostrar inasistencias.\n\n");
+        printf("\nNo hay datos suficientes para mostrar inasistencias.\n\n");
         return;
     }
 
@@ -285,7 +299,7 @@ void listaInasistencias(struct Alumno* alumnos, struct Asistencia* asistencias) 
             }
         }
     } else {
-        printf("\n[i] Todos los alumnos tienen asistencia perfecta.\n");
+        printf("\nTodos los alumnos tienen asistencia perfecta.\n");
     }
     printf("\n");
 }

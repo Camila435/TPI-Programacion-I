@@ -25,8 +25,8 @@ int legajoValido(struct Alumno* alumnos, int legajo) {
     }
     return 2; // legajo válido
 }
-// Pide datos al ingresar un nuevo alumno.
 
+// Pide datos al ingresar un nuevo alumno.
 struct Datos pedirDatos(struct Alumno* alumnos) {
     struct Datos datos;
     int estado;
@@ -59,7 +59,7 @@ struct Datos pedirDatos(struct Alumno* alumnos) {
 }
 
 
-// Esto carga las asistencias dentro de una lista dinamica, por alguna razon.
+// Esta funcion carga las asistencias de asistencias.txt a la memoria al inicio del programa.
 void cargarAsistencias(struct Asistencia** cabeza){
     FILE* archivo = fopen("data/asistencias.txt", "r");
     if (archivo == NULL){
@@ -114,9 +114,7 @@ void cargarAlumnos(struct Alumno** cabeza) {
     int legajo;
     char nombre[50];
     char apellido[50];
-
-    //(fscanf(alumnos.txt, %nº de legajo, %49 caracteres o hasta encontrar ';', 49 caracteres o hasta encontrar '\n' ))
-    //Solo quedará en el bucle cuando existan esas tres variables.
+    
     while (fscanf(archivo, "%d;%49[^;];%49[^\n]\n", &legajo, apellido, nombre) == 3) {
         struct Alumno* nuevo = (struct Alumno*)malloc(sizeof(struct Alumno));
         nuevo->legajo = legajo;
@@ -138,13 +136,16 @@ void cargarAlumnos(struct Alumno** cabeza) {
     fclose(archivo);
 }
 
-//Falta un algoritmo de ordenamiento 
 void mostrarAlumnos(struct Alumno* cabeza) {
     struct Alumno* actual = cabeza;
+    printf("\n+--------+----------------+----------------+\n");
+    printf("| Legajo | Apellido       | Nombre         |\n");
+    printf("+--------+----------------+----------------+\n");
     while (actual != NULL) {
-        printf("%d - %s %s\n", actual->legajo, actual->apellido, actual->nombre);
+        printf("| %-6d | %-14s | %-14s |\n", actual->legajo, actual->apellido, actual->nombre);
         actual = actual->siguiente;
     }
+    printf("+--------+----------------+----------------+\n");
 }
 
 void ordenarAlumnosPorApellido(struct Alumno* cabeza) {

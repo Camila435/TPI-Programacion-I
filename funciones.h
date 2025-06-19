@@ -33,7 +33,7 @@ void fechaActual(char* fecha);
     int legajoValido(struct Alumno* alumnos, int legajo); 
 
     // INFORMES
-    void listaInasistencias();
+    void listaInasistencias(struct Alumno* alumnos, struct Asistencia* asistencias);
     void mostrarAsistenciasPorFecha(struct Asistencia* asistencias);
    
 
