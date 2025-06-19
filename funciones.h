@@ -23,7 +23,7 @@ void fechaActual(char* fecha);
         char apellido[50];
     };
 
-    void tomarAsistencia(struct Alumno* cabeza);
+    void tomarAsistencia(struct Alumno* alumnos, struct Asistencia* asistencias);
 
     // GESTION DE ALUMNOS
     void registrarNuevoAlumno(struct Alumno** cabeza, int legajo,  char nombre[50], char apellido[50]);

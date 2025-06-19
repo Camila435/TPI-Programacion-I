@@ -22,7 +22,7 @@ int main(){
         getchar();
         switch (op){
         case 1:
-            tomarAsistencia(alumnos);
+            tomarAsistencia(alumnos, asistencias);
             // Recarga la lista para que lo recien cargado se muestre en el historial de asistencias.
             liberarAsistencias(asistencias);        
             asistencias = NULL;

@@ -6,42 +6,56 @@
 
 
 // Funcion para tomar asistencia
-void tomarAsistencia(struct Alumno* cabeza) {
-
-    if (cabeza == NULL) {
-        printf("No hay alumnos registrados. No se puede tomar asistencia.\n");
-        return;
-    }
-
-    FILE* asistencias = fopen("data/asistencias.txt", "a");
-    if (asistencias == NULL) {
-        printf("Error al abrir el archivo de asistencias.\n");
-        return;
-    }
+void tomarAsistencia(struct Alumno* alumnos, struct Asistencia* asistencias) {
+    if (!alumnos) return;
 
     char fecha[11];
     fechaActual(fecha);
 
-    struct Alumno* actual = cabeza;
+    struct Alumno* alumno = alumnos;
     char op, estado;
 
     printf("\n%-8s | %-15s | %-15s | %-8s\n", "Legajo", "Apellido", "Nombre", "Asistencia");
     printf("---------------------------------------------------------------\n");
-    while (actual != NULL) {
-        printf("%-8d | %-15s | %-15s | ", actual->legajo, actual->apellido, actual->nombre);
-        printf("[P/A]: ");
+    while (alumno) {
+        printf("%-8d | %-15s | %-15s | [P/A]? ", alumno->legajo, alumno->apellido, alumno->nombre);
         scanf(" %c", &estado);
-        estado = (estado == 'p' || estado == 'P') ? 'P' : 'A';
-    
-        fprintf(asistencias, "%s;%d;%s;%s;%c\n", fecha, actual->legajo, actual->apellido, actual->nombre, estado);
+        estado = toupper(estado)=='P' ? 'P' : 'A';
 
-        actual = actual->siguiente;
+        // Busca un nodo de asistencia existente 
+        struct Asistencia* actual = asistencias;
+        while (actual && !(actual->legajo==alumno->legajo && strcmp(actual->fecha, fecha)==0))
+            actual = actual->siguiente;
+
+        if (actual) {
+            // Si existe, pregunta si se quiere sobrescribir
+            printf("Ya existe asistencia de %s %s en %s (estado=%c). Sobrescribir? (S/N): ",
+                   alumno->apellido, alumno->nombre, fecha, actual->estado);
+            scanf(" %c", &op);
+            if (toupper(op)=='S')
+                actual->estado = estado;
+        } else {
+            // Si no, crea un nodo de asistencia
+            struct Asistencia* nuevo = malloc(sizeof(*nuevo));
+            strcpy(nuevo->fecha, fecha);
+            nuevo->legajo = alumno->legajo;
+            strcpy(nuevo->apellido, alumno->apellido);
+            strcpy(nuevo->nombre, alumno->nombre);
+            nuevo->estado = estado;
+            nuevo->siguiente = asistencias;
+            asistencias = nuevo;
+        }
+        alumno = alumno->siguiente;
     }
 
-    fclose(asistencias);
-    printf("Asistencia registrada correctamente.\n");
-}
+    FILE* f = fopen("data/asistencias.txt","w");
+    for (struct Asistencia* iter = asistencias; iter; iter = iter->siguiente)
+        fprintf(f,"%s;%d;%s;%s;%c\n",
+                iter->fecha, iter->legajo, iter->apellido, iter->nombre, iter->estado);
+    fclose(f);
 
+    printf("Asistencia procesada.\n");
+}
 
 // GESTION DE ALUMNOS //
 
